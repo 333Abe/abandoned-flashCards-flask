@@ -1,6 +1,7 @@
 .venv-fc/
 .env
 notes
+.gitignore
 
 *.pyc
 __pycache__/
