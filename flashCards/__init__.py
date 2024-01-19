@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from dotenv import load_dotenv
+from . import db
 
 # Load environment variables from .env file if not already loaded
 load_dotenv(override=False)
@@ -30,5 +31,7 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    db.init_app(app)
 
     return app
