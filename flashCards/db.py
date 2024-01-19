@@ -1,14 +1,16 @@
 from flask import current_app, g
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 import click
 
 db = SQLAlchemy()
 
 def get_db():
     if 'db' not in g:
+        echo_enabled = current_app.config.get('SQLALCHEMY_ECHO', False)
         g.db = db.create_engine(
             current_app.config['SQLALCHEMY_DATABASE_URI'],
-            echo=current_app.config['SQLALCHEMY_ECHO']
+            echo=echo_enabled
         )
 
     return g.db
@@ -21,9 +23,13 @@ def close_db(e=None):
 
 def init_db():
     db = get_db()
+    with db.connect() as conn:
 
-    with current_app.open_resource('schema.sql') as f:
-        db.executescript(f.read().decode('utf8'))
+        with current_app.open_resource('schema.sql') as f:
+            sql_script = f.read().decode('utf8')
+        
+        conn.execute(text(sql_script))
+        conn.commit()
 
 
 @click.command('init-db')
