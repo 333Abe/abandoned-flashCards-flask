@@ -7,10 +7,9 @@ db = SQLAlchemy()
 
 def get_db():
     if 'db' not in g:
-        echo_enabled = current_app.config.get('SQLALCHEMY_ECHO', False)
         g.db = db.create_engine(
             current_app.config['SQLALCHEMY_DATABASE_URI'],
-            echo=echo_enabled
+            echo=True
         )
 
     return g.db
