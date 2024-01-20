@@ -2,6 +2,7 @@
 .env
 notes
 .gitignore
+testing.py
 
 *.pyc
 __pycache__/

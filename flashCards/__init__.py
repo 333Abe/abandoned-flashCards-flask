@@ -2,6 +2,7 @@ import os
 from flask import Flask
 from dotenv import load_dotenv
 from . import db
+from . import select_topics
 
 # Load environment variables from .env file if not already loaded
 load_dotenv(override=False)
@@ -33,5 +34,8 @@ def create_app(test_config=None):
         pass
 
     db.init_app(app)
+
+    app.register_blueprint(select_topics.bp)
+    app.add_url_rule('/', endpoint='index')
 
     return app
